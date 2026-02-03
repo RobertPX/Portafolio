@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { Code2, Database, Layers, Rocket } from "lucide-react";
 
 const highlights = [
@@ -44,18 +45,16 @@ export function About() {
               <div className="absolute inset-4 bg-gradient-to-br from-primary/20 to-accent/20 rounded-2xl" />
               <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl transform rotate-3" />
 
-              {/* Avatar placeholder */}
-              <div className="relative bg-card border border-border rounded-2xl overflow-hidden aspect-square flex items-center justify-center">
-                <div className="text-center p-8">
-                  <div className="w-32 h-32 mx-auto mb-6 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center">
-                    <span className="text-5xl font-bold text-primary-foreground font-mono">
-                      {"</>"}
-                    </span>
-                  </div>
-                  <p className="text-muted-foreground font-mono text-sm">
-                    developer.avatar
-                  </p>
-                </div>
+              {/* Profile photo */}
+              <div className="relative bg-card border border-border rounded-2xl overflow-hidden aspect-square">
+                <Image
+                  src="/profile.jpg"
+                  alt="Luis Roberto Zarate Aiquipa"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 400px"
+                  priority
+                />
               </div>
 
               {/* Floating badges */}
