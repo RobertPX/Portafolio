@@ -1,2 +1,0 @@
-# Portafolio
-Mi Portafolio
