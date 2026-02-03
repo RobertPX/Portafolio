@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ExternalLink, Github, FileText, ChevronRight } from "lucide-react";
+import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -69,25 +70,19 @@ export function Projects() {
                   >
                     {/* Project Image */}
                     <div
-                      className={`relative aspect-video lg:aspect-auto overflow-hidden bg-muted ${
+                      className={`relative aspect-video lg:aspect-auto lg:min-h-[300px] overflow-hidden bg-muted ${
                         index % 2 === 1 ? "lg:col-start-2" : ""
                       }`}
                     >
-                      <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20" />
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="text-center p-8">
-                          <div className="w-16 h-16 mx-auto mb-4 rounded-xl bg-primary/10 flex items-center justify-center">
-                            <span className="text-2xl font-bold text-primary font-mono">
-                              {project.title.charAt(0)}
-                            </span>
-                          </div>
-                          <p className="text-sm text-muted-foreground font-mono">
-                            {project.id}.preview
-                          </p>
-                        </div>
-                      </div>
-                      {/* Hover overlay */}
-                      <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      <Image
+                        src={project.image}
+                        alt={`Screenshot de ${project.title}`}
+                        fill
+                        className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                      />
+                      {/* Gradient overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     </div>
 
                     {/* Project Info */}
