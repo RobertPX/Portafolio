@@ -2,7 +2,16 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Send, Mail, Github, Linkedin, Download, Loader2 } from "lucide-react";
+import {
+  Send,
+  Mail,
+  Github,
+  Linkedin,
+  Download,
+  Loader2,
+  CheckCircle,
+  XCircle,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -19,33 +28,64 @@ const contactMethods = [
   {
     icon: Github,
     label: "GitHub",
-    value: "@tu-usuario",
+    value: "@RobertPX",
     href: socialLinks.github,
   },
   {
     icon: Linkedin,
     label: "LinkedIn",
-    value: "tu-usuario",
+    value: "luis-roberto-zarate-aiquipa",
     href: socialLinks.linkedin,
   },
 ];
 
+type FormStatus = "idle" | "submitting" | "success" | "error";
+
 export function Contact() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [status, setStatus] = useState<FormStatus>("idle");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsSubmitting(true);
+    setStatus("submitting");
+    setErrorMessage("");
 
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    const form = e.currentTarget;
+    const formData = new FormData(form);
 
-    setIsSubmitting(false);
-    setIsSubmitted(true);
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: process.env.NEXT_PUBLIC_WEB3FORMS_KEY,
+          name: formData.get("name"),
+          email: formData.get("email"),
+          subject: formData.get("subject"),
+          message: formData.get("message"),
+          from_name: "Portfolio Contact Form",
+        }),
+      });
 
-    // Reset after showing success message
-    setTimeout(() => setIsSubmitted(false), 3000);
+      const result = await response.json();
+
+      if (result.success) {
+        setStatus("success");
+        form.reset();
+        setTimeout(() => setStatus("idle"), 5000);
+      } else {
+        throw new Error(result.message || "Error al enviar el mensaje");
+      }
+    } catch (error) {
+      setStatus("error");
+      setErrorMessage(
+        error instanceof Error ? error.message : "Error al enviar el mensaje"
+      );
+      setTimeout(() => setStatus("idle"), 5000);
+    }
   };
 
   return (
@@ -160,7 +200,7 @@ export function Contact() {
                         name="name"
                         placeholder="Tu nombre"
                         required
-                        disabled={isSubmitting}
+                        disabled={status === "submitting"}
                       />
                     </div>
                     <div className="space-y-2">
@@ -173,7 +213,7 @@ export function Contact() {
                         type="email"
                         placeholder="tu@email.com"
                         required
-                        disabled={isSubmitting}
+                        disabled={status === "submitting"}
                       />
                     </div>
                   </div>
@@ -186,7 +226,7 @@ export function Contact() {
                       name="subject"
                       placeholder="¿En qué puedo ayudarte?"
                       required
-                      disabled={isSubmitting}
+                      disabled={status === "submitting"}
                     />
                   </div>
                   <div className="space-y-2">
@@ -199,21 +239,47 @@ export function Contact() {
                       placeholder="Cuéntame sobre tu proyecto o propuesta..."
                       rows={5}
                       required
-                      disabled={isSubmitting}
+                      disabled={status === "submitting"}
                     />
                   </div>
+
+                  {/* Status Messages */}
+                  {status === "success" && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="flex items-center gap-2 p-3 rounded-lg bg-accent/10 text-accent"
+                    >
+                      <CheckCircle className="h-4 w-4" />
+                      <span className="text-sm">
+                        Mensaje enviado correctamente. Te responderé pronto.
+                      </span>
+                    </motion.div>
+                  )}
+
+                  {status === "error" && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="flex items-center gap-2 p-3 rounded-lg bg-destructive/10 text-destructive"
+                    >
+                      <XCircle className="h-4 w-4" />
+                      <span className="text-sm">
+                        {errorMessage || "Error al enviar. Intenta de nuevo."}
+                      </span>
+                    </motion.div>
+                  )}
+
                   <Button
                     type="submit"
                     className="w-full gap-2"
-                    disabled={isSubmitting}
+                    disabled={status === "submitting"}
                   >
-                    {isSubmitting ? (
+                    {status === "submitting" ? (
                       <>
                         <Loader2 className="h-4 w-4 animate-spin" />
                         Enviando...
                       </>
-                    ) : isSubmitted ? (
-                      <>Mensaje enviado</>
                     ) : (
                       <>
                         <Send className="h-4 w-4" />
