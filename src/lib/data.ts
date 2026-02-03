@@ -48,44 +48,58 @@ export interface Technology {
 export const projects: Project[] = [
   {
     id: "saas-fastapi",
-    title: "SaaS Subscription Platform",
-    tagline: "Sistema completo de gestión de suscripciones con pagos integrados",
+    title: "SaaS Subscription Management Api",
+    tagline: "Sistema robusto de gestión de suscripciones con Stripe",
     description:
-      "Plataforma SaaS robusta construida con FastAPI que maneja suscripciones, facturación recurrente y webhooks de Stripe. Incluye autenticación JWT, rate limiting, y documentación OpenAPI completa.",
-    techStack: ["FastAPI", "PostgreSQL", "Stripe API", "Docker", "pytest", "Redis"],
+      "API REST enterprise-grade para manejo de suscripciones SaaS con integración completa de Stripe. Incluye autenticación JWT, procesamiento asíncrono de tareas, webhooks en tiempo real y arquitectura limpia con Repository Pattern para máxima escalabilidad.",
+    techStack: ["FastAPI",
+      "PostgreSQL", 
+      "Stripe",
+      "Celery",
+      "Redis",
+      "Docker"
+    ],
     highlights: [
-      "Arquitectura escalable con async/await",
-      "Testing coverage >80%",
-      "Webhooks Stripe con retry logic",
-      "OpenAPI docs auto-generada",
-      "CI/CD con GitHub Actions",
+      "Arquitectura limpia con Repository Pattern",
+      "Procesamiento asíncrono con Celery/Redis",
+      "Integración completa con Stripe Webhooks",
+      "Auth JWT con refresh tokens",
+      "Migraciones automáticas con Alembic",
+      "Tests unitarios y de integración"
     ],
     links: {
       github: "https://github.com/RobertPX/saas-subscription-api",
-      docs: "https://docs.example.com",
     },
     image: "/projects/saas-platform.png",
     featured: true,
   },
   {
     id: "pern-platform",
-    title: "Project Management Platform",
-    tagline: "Aplicación colaborativa fullstack para equipos",
+    title: "Real-time Crypto Monitor",
+    tagline: "Dashboard en tiempo real con streaming WebSocket desde Binance",
     description:
-      "Plataforma de gestión de proyectos con stack PERN que permite a equipos organizar tareas, colaborar en tiempo real y trackear progreso. TypeScript end-to-end para type safety completo.",
-    techStack: ["PostgreSQL", "Express", "React", "Node.js", "TypeScript", "Prisma"],
+      "Sistema fullstack de monitoreo de criptomonedas con WebSocket streaming desde Binance API. Incluye broadcast eficiente multi-cliente, auto-reconexión con exponential backoff, sistema híbrido de almacenamiento (Redis + Memory fallback) y dashboard profesional con gráficos dinámicos en tiempo real.",
+    techStack: [
+      "FastAPI",
+      "WebSockets",
+      "Redis",
+      "Chart.js",
+      "Docker",
+      "Tailwind CSS"
+    ],
     highlights: [
-      "TypeScript end-to-end",
-      "Auth seguro con refresh tokens",
-      "CI/CD automatizado",
-      "Componentes UI reutilizables",
-      "API RESTful documentada",
+      "✓ Demo en vivo deployado en Render",
+      "✓ Streaming WebSocket con auto-reconexión",
+      "✓ Broadcast eficiente a múltiples clientes",
+      "✓ Sistema híbrido Redis/Memory resiliente",
+      "✓ CI/CD con GitHub Actions y pre-commit hooks",
+      "✓ Dashboard fullstack con gráficos en tiempo real"
     ],
     links: {
-      github: "https://github.com/tu-usuario/pern-platform",
-      demo: "https://demo.example.com",
+      github: "https://github.com/RobertPX/crypto-monitor",
+      demo: "https://crypto-monitor-libe.onrender.com",
     },
-    image: "/projects/pern-platform.png",
+    image: "/projects/crypto.png",
     featured: true,
   },
   {
@@ -103,7 +117,7 @@ export const projects: Project[] = [
       "Deploy automático en Vercel",
     ],
     links: {
-      github: "https://github.com/tu-usuario/portafolio",
+      github: "https://github.com/RobertPX/portafolio",
     },
     image: "/projects/portfolio.png",
     featured: true,
